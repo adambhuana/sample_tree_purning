@@ -96,23 +96,33 @@ def recommend_pruning(wo_name):
 # -----------------------------
 def show_tree_map(trees_df):
     st.subheader("Peta Pohon Sekitar WO")
+
+    # Tambahkan debug data
+    st.write(trees_df[['latitude', 'longitude']].head())
+
+    # (Opsional) Tambahkan token jika pakai mapbox style
+    # pdk.settings.mapbox_api_key = "YOUR_MAPBOX_API_KEY"
+
+    # Tampilkan peta
     st.pydeck_chart(pdk.Deck(
-        map_style="mapbox://styles/mapbox/light-v9",
+        map_style="road",  # Ganti dari mapbox style
         initial_view_state=pdk.ViewState(
             latitude=trees_df["latitude"].mean(),
             longitude=trees_df["longitude"].mean(),
-            zoom=14,
-            pitch=50,
+            zoom=13,
+            pitch=0,
         ),
         layers=[
             pdk.Layer(
                 "ScatterplotLayer",
                 data=trees_df,
                 get_position='[longitude, latitude]',
-                get_color='[200, 30, 0, 160]',
-                get_radius=20,
+                get_color='[0, 128, 0, 160]',
+                get_radius=50,
+                pickable=True,
             )
         ],
+        tooltip={"text": "Lat: {latitude}\nLon: {longitude}"},
     ))
 
 # -----------------------------
